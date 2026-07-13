@@ -1,9 +1,11 @@
 // const { counterAction } = require("./features/counter/counterSlice");
 // const { dynamicCounterAction } = require("./features/dynamicCounter/dynamicCounterSlice");
 
-const { getAllPosts } = require("./features/post/postSlice");
+// const { getAllPosts } = require("./features/post/postSlice");
 
 const store = require("./app/store");
+const { fetchTheVideo } = require("./features/videos/videoSlice");
+const { fetchRelatedVideos } = require("./features/videos/relatedVideoSlice");
 
 store.subscribe(() => {
   // console.log(store.getState());
@@ -22,4 +24,9 @@ store.subscribe(() => {
 // store.dispatch(dynamicCounterAction.decrement(2));
 
 // post dispatch
-store.dispatch(getAllPosts());
+const callRelatedVideo = (tags) => {
+  store.dispatch(fetchRelatedVideos(tags));
+};
+store.dispatch(fetchTheVideo()).then((data) => {
+  callRelatedVideo(data.payload.tags);
+});
