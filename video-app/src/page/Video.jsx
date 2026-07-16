@@ -35,6 +35,7 @@ const Video = () => {
         <div className="col-span-full w-full space-y-8 lg:col-span-2">
           <Player link={link} title={title} />
           <Description
+            id={id}
             title={title}
             description={description}
             date={date}

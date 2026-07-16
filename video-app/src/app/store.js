@@ -4,6 +4,7 @@ import tagsSlice from "../features/tags/tagsSlice";
 import videoSlice from "../features/video/videoSlice";
 import relatedVideosSlice from "../features/relatedVideos/relatedVideosSlice";
 import filterSlice from "../features/filter/filterSlice";
+import likesUnlikesSlice from "../features/likesUnlikes/likesUnlikesSlice";
 
 const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ const store = configureStore({
     video: videoSlice,
     relatedVideos: relatedVideosSlice,
     filters: filterSlice,
+    likesUnlikes: likesUnlikesSlice,
   },
 });
 export default store;
