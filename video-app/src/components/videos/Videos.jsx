@@ -6,10 +6,11 @@ import Loading from "../ui/Loading";
 import Error from "../ui/Error";
 const Videos = () => {
   const allVideos = useSelector((state) => state.videos);
+  const filters = useSelector((state) => state.filters);
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getVideos());
-  }, [dispatch]);
+    dispatch(getVideos(filters));
+  }, [dispatch, filters]);
 
   const { isLoading, isError, error, videos } = allVideos;
   let content;

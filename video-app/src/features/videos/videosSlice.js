@@ -8,10 +8,13 @@ const initialState = {
   videos: [],
 };
 
-export const getVideos = createAsyncThunk("videos/getVideos", async () => {
-  const response = await fetchVideosApi();
-  return response;
-});
+export const getVideos = createAsyncThunk(
+  "videos/getVideos",
+  async (filters) => {
+    const response = await fetchVideosApi(filters);
+    return response;
+  },
+);
 const videosSlice = createSlice({
   name: "videos",
   initialState,
