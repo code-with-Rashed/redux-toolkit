@@ -1,37 +1,40 @@
-const PostDetails = () => {
+const PostDetails = ({ post }) => {
+  const { image, title, likes, isSaved, tags, description } = post;
   return (
     <main className="post">
       <img
-        src="https://res.cloudinary.com/daily-now/image/upload/f_auto,q_auto/v1/posts/eb42d2ca714ecc04115b6733b0d22ce7"
+        src={image}
         alt="githum"
         className="w-full rounded-md"
         id="lws-megaThumb"
       />
       <div>
         <h1 className="mt-6 text-2xl post-title" id="lws-singleTitle">
-          MERN stack for Web Development
+          {title}
         </h1>
         <div className="tags" id="lws-singleTags">
-          <span>#python,</span> <span>#tech,</span> <span>#git</span>
+          {tags.map((tag, index) => (
+            <span className="mx-2 text-green-400" key={index}>
+              #{tag}
+            </span>
+          ))}
         </div>
-        <div className="btn-group">
+        <div className="btn-group mt-2">
           <button className="like-btn" id="lws-singleLinks">
-            <i className="fa-regular fa-thumbs-up"></i> 100
+            👍 {likes}
           </button>
-          <button className="active save-btn" id="lws-singleSavedBtn">
-            🔖 Saved
-          </button>
+          {isSaved ? (
+            <button className="active save-btn" id="lws-singleSavedBtn">
+              🔖 Saved
+            </button>
+          ) : (
+            <button className="save-btn" id="lws-singleSavedBtn">
+              🔖 Save
+            </button>
+          )}
         </div>
         <div className="mt-6">
-          <p>
-            A MERN stack comprises a collection of four frameworks (MongoDB,
-            ExpressJs, ReactJs and NodeJs) used to develop full-stack javascript
-            solutions for rapid, scalable, and secure applications. Each
-            framework serves a different purpose in creating successful web
-            applications. It is an excellent choice for companies looking to
-            develop high-quality responsive applications quickly using just one
-            language.
-          </p>
+          <p>{description}</p>
         </div>
       </div>
     </main>
