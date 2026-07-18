@@ -10,7 +10,7 @@ const RelatedPost = ({ post }) => {
         <Link to={`/post/${id}`}>{title}</Link>
         <div className="mb-0 tags">
           {tags.map((tag, index) => (
-            <span key={index} className="text-blue-300">
+            <span key={index} className="text-blue-300 mx-2">
               #{tag}
             </span>
           ))}
