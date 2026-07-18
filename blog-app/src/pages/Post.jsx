@@ -31,7 +31,7 @@ const Post = () => {
     content = (
       <>
         <PostDetails post={post}></PostDetails>
-        <RelatedPosts></RelatedPosts>
+        <RelatedPosts tags={post.tags} id={post.id}></RelatedPosts>
       </>
     );
   }
