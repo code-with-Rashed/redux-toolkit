@@ -1,5 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import fetchDetailPost from "./detailPostApi";
+import {
+  fetchDetailPost,
+  updatePostLikes,
+  updatePostStatus,
+} from "./detailPostApi";
 
 const initialState = {
   isLoading: false,
@@ -11,6 +15,20 @@ export const getDetailPost = createAsyncThunk(
   "posts/fetchDetailPost",
   async (id) => {
     const response = await fetchDetailPost(id);
+    return response;
+  },
+);
+export const changePostStatus = createAsyncThunk(
+  "post/changePostStatus",
+  async (data) => {
+    const response = await updatePostStatus(data);
+    return response;
+  },
+);
+export const changePostLikes = createAsyncThunk(
+  "post/changePostLikes",
+  async (data) => {
+    const response = await updatePostLikes(data);
     return response;
   },
 );

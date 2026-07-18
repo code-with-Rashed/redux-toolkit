@@ -1,5 +1,22 @@
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import {
+  changePostLikes,
+  changePostStatus,
+} from "../../features/detailPost/detailPostSlice";
 const PostDetails = ({ post }) => {
-  const { image, title, likes, isSaved, tags, description } = post;
+  const dispatch = useDispatch();
+  const { id, image, title, likes, isSaved, tags, description } = post;
+  const [status, setStatus] = useState(isSaved);
+  const [totalLike, setTotalLike] = useState(likes);
+
+  useEffect(() => {
+    dispatch(changePostLikes({ id, likes: totalLike }));
+  }, [id, dispatch, totalLike]);
+
+  useEffect(() => {
+    dispatch(changePostStatus({ id, isSaved: status }));
+  }, [dispatch, id, status]);
   return (
     <main className="post">
       <img
@@ -20,15 +37,27 @@ const PostDetails = ({ post }) => {
           ))}
         </div>
         <div className="btn-group mt-2">
-          <button className="like-btn" id="lws-singleLinks">
-            👍 {likes}
+          <button
+            className="like-btn"
+            id="lws-singleLinks"
+            onClick={() => setTotalLike((likes) => likes + 1)}
+          >
+            👍 {totalLike}
           </button>
-          {isSaved ? (
-            <button className="active save-btn" id="lws-singleSavedBtn">
+          {status ? (
+            <button
+              className="active save-btn"
+              id="lws-singleSavedBtn"
+              onClick={() => setStatus(!status)}
+            >
               🔖 Saved
             </button>
           ) : (
-            <button className="save-btn" id="lws-singleSavedBtn">
+            <button
+              className="save-btn"
+              id="lws-singleSavedBtn"
+              onClick={() => setStatus(!status)}
+            >
               🔖 Save
             </button>
           )}
