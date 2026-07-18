@@ -1,30 +1,35 @@
-const Post = () => {
+import { Link } from "react-router";
+const Post = ({ post }) => {
+  const { id, image, title, createdAt, likes, tags, isSaved } = post;
   return (
     <div className="lws-card">
-      <a href="post.html">
-        <img
-          src="https://res.cloudinary.com/daily-now/image/upload/f_auto,q_auto/v1/posts/eb42d2ca714ecc04115b6733b0d22ce7"
-          className="lws-card-image"
-          alt=""
-        />
-      </a>
+      <Link to={`/post/${id}`}>
+        <img src={image} className="lws-card-image" alt={title} />
+      </Link>
+
       <div className="p-4">
         <div className="lws-card-header">
-          <p className="lws-publishedDate">2023-05-01</p>
+          <p className="lws-publishedDate">{createdAt}</p>
           <p className="lws-likeCount">
-            <i className="fa-regular fa-thumbs-up"></i>100
+            <i className="fa-regular fa-thumbs-up"></i>
+            {likes}
           </p>
         </div>
-        <a href="post.html" className="lws-postTitle">
-          {" "}
-          Top Github Alternatives{" "}
-        </a>
+        <Link to={`/post/${id}`} className="lws-postTitle">
+          {title}
+        </Link>
         <div className="lws-tags">
-          <span>#python,</span> <span>#tech,</span> <span>#git</span>
+          {tags.map((tag, index) => (
+            <span key={index} className="text-blue-300">
+              #{tag}
+            </span>
+          ))}
         </div>
-        <div className="flex gap-2 mt-4">
-          <span className="lws-badge"> Saved </span>
-        </div>
+        {isSaved && (
+          <div className="flex gap-2 mt-4">
+            <span className="lws-badge"> Saved </span>
+          </div>
+        )}
       </div>
     </div>
   );
