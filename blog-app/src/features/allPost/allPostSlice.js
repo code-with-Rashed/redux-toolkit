@@ -8,8 +8,8 @@ const initialState = {
   posts: [],
 };
 
-export const getAllPost = createAsyncThunk("posts/getAllPost", async () => {
-  const result = await fetchAllPost();
+export const getAllPost = createAsyncThunk("posts/getAllPost", async (filters) => {
+  const result = await fetchAllPost(filters);
   return result;
 });
 const allPostSlice = createSlice({

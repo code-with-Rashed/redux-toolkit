@@ -4,10 +4,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllPost } from "../../features/allPost/allPostSlice";
 const Posts = () => {
   const allPost = useSelector((state) => state.allPost);
+  const filters = useSelector((state) => state.filters);
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getAllPost());
-  }, [dispatch]);
+    dispatch(getAllPost(filters));
+  }, [dispatch, filters]);
   const { isLoading, isError, error, posts } = allPost;
   let content = null;
   if (isLoading) {
