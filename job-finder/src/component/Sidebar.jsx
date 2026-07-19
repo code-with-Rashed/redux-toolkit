@@ -11,7 +11,7 @@ const Sidebar = () => {
               className="main-menu menu-active"
               id="lws-alljobs-menu"
             >
-              <i class="fa-solid fa-briefcase me-1"></i>
+              <i className="fa-solid fa-briefcase me-1"></i>
               <span> All Available Jobs</span>
             </Link>
             <ul className="space-y-6 lg:space-y-2 ">
@@ -49,7 +49,7 @@ const Sidebar = () => {
           </li>
           <li>
             <Link to="/job/add" className="main-menu" id="lws-addJob-menu">
-              <i class="fa-solid fa-file-circle-plus me-1"></i>
+              <i className="fa-solid fa-file-circle-plus me-1"></i>
               <span>Add NewJob</span>
             </Link>
             <a href="/jobs" className="main-menu" id="lws-addJob-menu"></a>

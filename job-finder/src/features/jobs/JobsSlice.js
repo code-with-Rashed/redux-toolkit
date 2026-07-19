@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { fetchAllJobs } from "./JobsApi";
+import { addJob, fetchAllJobs } from "./JobsApi";
 
 // initial state
 const initialState = {
@@ -12,6 +12,10 @@ const initialState = {
 // Thunks
 export const getAllJobs = createAsyncThunk("jobs/getAllJobs", async () => {
   const response = await fetchAllJobs();
+  return response;
+});
+export const addNewJob = createAsyncThunk("jobs/addNewJob", async (data) => {
+  const response = await addJob(data);
   return response;
 });
 
@@ -35,6 +39,11 @@ const JobsSlice = createSlice({
         state.error = action.error?.message;
         state.jobs = [];
       });
+
+    // add new job reducer
+    builder.addCase(addNewJob.fulfilled, (state, action) => {
+      state.jobs.push(action.payload);
+    });
   },
 });
 
