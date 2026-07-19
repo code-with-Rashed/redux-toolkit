@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { addJob, fetchAllJobs } from "./JobsApi";
+import { addJob, fetchAllJobs, fetchEditableJob, updateJob } from "./JobsApi";
 
 // initial state
 const initialState = {
@@ -7,6 +7,7 @@ const initialState = {
   isError: false,
   error: "",
   jobs: [],
+  job: {},
 };
 
 // Thunks
@@ -16,6 +17,19 @@ export const getAllJobs = createAsyncThunk("jobs/getAllJobs", async () => {
 });
 export const addNewJob = createAsyncThunk("jobs/addNewJob", async (data) => {
   const response = await addJob(data);
+  return response;
+});
+
+export const getEditableJob = createAsyncThunk(
+  "jobs/getEditableJob",
+  async (id) => {
+    const response = await fetchEditableJob(id);
+    return response;
+  },
+);
+
+export const editJob = createAsyncThunk("jobs/editJob", async (data) => {
+  const response = await updateJob(data);
   return response;
 });
 
@@ -43,6 +57,33 @@ const JobsSlice = createSlice({
     // add new job reducer
     builder.addCase(addNewJob.fulfilled, (state, action) => {
       state.jobs.push(action.payload);
+    });
+
+    // get editable job
+    builder
+      .addCase(getEditableJob.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getEditableJob.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isError = false;
+        state.job = action.payload;
+      })
+      .addCase(getEditableJob.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = false;
+        state.error = action.error?.message;
+        state.job = {};
+      });
+
+    // edit existing job
+    builder.addCase(editJob.fulfilled, (state, action) => {
+      state.jobs = state.jobs.map((job) => {
+        if (job.id === action.payload.id) {
+          return action.payload;
+        }
+        return job;
+      });
     });
   },
 });
