@@ -1,5 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { addJob, fetchAllJobs, fetchEditableJob, updateJob } from "./JobsApi";
+import {
+  addJob,
+  deleteJob,
+  fetchAllJobs,
+  fetchEditableJob,
+  updateJob,
+} from "./JobsApi";
 
 // initial state
 const initialState = {
@@ -30,6 +36,11 @@ export const getEditableJob = createAsyncThunk(
 
 export const editJob = createAsyncThunk("jobs/editJob", async (data) => {
   const response = await updateJob(data);
+  return response;
+});
+
+export const removeJob = createAsyncThunk("jobs/removeJob", async (id) => {
+  const response = await deleteJob(id);
   return response;
 });
 
@@ -84,6 +95,12 @@ const JobsSlice = createSlice({
         }
         return job;
       });
+    });
+
+    // delete job
+    builder.addCase(removeJob.fulfilled, (state, action) => {
+      const id = action.meta.arg;
+      state.jobs = state.jobs.filter((job) => job.id !== id);
     });
   },
 });

@@ -19,3 +19,7 @@ export const updateJob = async (data) => {
   const response = await baseApi.put(`/jobs/${data.id}`, data);
   return response.data;
 };
+
+export const deleteJob = async (id) => {
+  await baseApi.delete(`/jobs/${id}`);
+};
