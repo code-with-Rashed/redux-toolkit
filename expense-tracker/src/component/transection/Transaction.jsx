@@ -1,24 +1,13 @@
 import Edit from "../../assets/edit.svg";
 import Delete from "../../assets/delete.svg";
-const Transaction = () => {
+const Transaction = ({ transaction }) => {
+  const { name, type, amount } = transaction;
   return (
     <>
-      <li className="transaction income">
-        <p>Earned this month</p>
+      <li className={`transaction ${type}`}>
+        <p>{name}</p>
         <div className="right">
-          <p>৳ 100</p>
-          <button className="link">
-            <img className="icon" src={Edit} />
-          </button>
-          <button className="link">
-            <img className="icon" src={Delete} />
-          </button>
-        </div>
-      </li>
-      <li className="transaction expense">
-        <p>Earned this month</p>
-        <div className="right">
-          <p>৳ 100</p>
+          <p>৳ {amount}</p>
           <button className="link">
             <img className="icon" src={Edit} />
           </button>
