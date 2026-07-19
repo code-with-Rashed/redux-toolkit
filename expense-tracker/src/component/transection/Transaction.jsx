@@ -1,5 +1,6 @@
 import Edit from "../../assets/edit.svg";
 import Delete from "../../assets/delete.svg";
+import amountFormat from "../../utilities/amountFormat";
 const Transaction = ({ transaction }) => {
   const { name, type, amount } = transaction;
   return (
@@ -7,7 +8,7 @@ const Transaction = ({ transaction }) => {
       <li className={`transaction ${type}`}>
         <p>{name}</p>
         <div className="right">
-          <p>৳ {amount}</p>
+          <p>৳ {amountFormat(amount)}</p>
           <button className="link">
             <img className="icon" src={Edit} />
           </button>
