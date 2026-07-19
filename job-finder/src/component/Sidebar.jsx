@@ -11,7 +11,8 @@ const Sidebar = () => {
               className="main-menu menu-active"
               id="lws-alljobs-menu"
             >
-              💼 <span> All Available Jobs</span>
+              <i class="fa-solid fa-briefcase me-1"></i>
+              <span> All Available Jobs</span>
             </Link>
             <ul className="space-y-6 lg:space-y-2 ">
               <li>
@@ -20,7 +21,7 @@ const Sidebar = () => {
                   href="/jobs/internship"
                   id="lws-internship-menu"
                 >
-                  <i className="fa-solid fa-stop !text-[#FF5757]"></i>
+                  <i className="fa-solid fa-stop !text-[#FF5757] me-1"></i>
                   Internship
                 </a>
               </li>
@@ -30,8 +31,8 @@ const Sidebar = () => {
                   href="/jobs/fulltime"
                   id="lws-fulltime-menu"
                 >
-                  <i className="fa-solid fa-stop !text-[#FF8A00]"></i>
-                  Full Time
+                  <i className="fa-solid fa-stop !text-[#FF8A00] me-1"></i>Full
+                  Time
                 </a>
               </li>
               <li>
@@ -40,7 +41,7 @@ const Sidebar = () => {
                   href="/jobs/remote"
                   id="lws-remote-menu"
                 >
-                  <i className="fa-solid fa-stop !text-[#56E5C4]"></i>
+                  <i className="fa-solid fa-stop !text-[#56E5C4] me-1"></i>
                   Remote
                 </a>
               </li>
@@ -48,7 +49,8 @@ const Sidebar = () => {
           </li>
           <li>
             <Link to="/job/add" className="main-menu" id="lws-addJob-menu">
-              ➕ <span>Add NewJob</span>
+              <i class="fa-solid fa-file-circle-plus me-1"></i>
+              <span>Add NewJob</span>
             </Link>
             <a href="/jobs" className="main-menu" id="lws-addJob-menu"></a>
           </li>
