@@ -23,10 +23,11 @@ const Balance = () => {
     content = (
       <span>
         {amountFormat(
-          transactions.reduce(
-            (acc, transaction) => acc + transaction.amount,
-            0,
-          ),
+          transactions.reduce((acc, transaction) => {
+            const { type, amount } = transaction;
+            const result = type === "income" ? acc + amount : acc - amount;
+            return result;
+          }, 0),
         )}
       </span>
     );
