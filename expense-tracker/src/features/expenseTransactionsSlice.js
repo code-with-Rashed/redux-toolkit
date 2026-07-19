@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
+  addExpenseTransaction,
   deleteTransaction,
   fetchAllExpenseTransactions,
 } from "./expenseTransactionsApi";
@@ -19,6 +20,15 @@ export const getAllExpenseTransactions = createAsyncThunk(
     return response;
   },
 );
+
+export const addNewExpenseTransaction = createAsyncThunk(
+  "transactions/addExpenseTransaction",
+  async (data) => {
+    const response = await addExpenseTransaction(data);
+    return response;
+  },
+);
+
 export const removeTransaction = createAsyncThunk(
   "transactions/deleteTransaction",
   async (id) => {
@@ -54,6 +64,11 @@ const expenseTransactionSlice = createSlice({
       state.transactions = state.transactions.filter(
         (transaction) => transaction.id !== deleteTransactionId,
       );
+    });
+
+    // add expense transaction
+    builder.addCase(addNewExpenseTransaction.fulfilled, (state, action) => {
+      state.transactions.push(action.payload);
     });
   },
 });
