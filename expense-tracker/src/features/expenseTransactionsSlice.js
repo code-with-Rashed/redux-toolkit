@@ -3,6 +3,7 @@ import {
   addExpenseTransaction,
   deleteTransaction,
   fetchAllExpenseTransactions,
+  updateExpenseTransaction,
 } from "./expenseTransactionsApi";
 
 const initialState = {
@@ -25,6 +26,14 @@ export const addNewExpenseTransaction = createAsyncThunk(
   "transactions/addExpenseTransaction",
   async (data) => {
     const response = await addExpenseTransaction(data);
+    return response;
+  },
+);
+
+export const updatedExpenseTransaction = createAsyncThunk(
+  "transactions/updateExpenseTransaction",
+  async (data) => {
+    const response = await updateExpenseTransaction(data);
     return response;
   },
 );
@@ -69,6 +78,16 @@ const expenseTransactionSlice = createSlice({
     // add expense transaction
     builder.addCase(addNewExpenseTransaction.fulfilled, (state, action) => {
       state.transactions.push(action.payload);
+    });
+
+    // update expense transaction
+    builder.addCase(updatedExpenseTransaction.fulfilled, (state, action) => {
+      state.transactions = state.transactions.map((transaction) => {
+        if (transaction.id === action.payload.id) {
+          return action.payload;
+        }
+        return transaction;
+      });
     });
   },
 });

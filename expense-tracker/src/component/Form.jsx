@@ -1,15 +1,29 @@
-import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { addNewExpenseTransaction } from "../features/expenseTransactionsSlice";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addNewExpenseTransaction,
+  updatedExpenseTransaction,
+} from "../features/expenseTransactionsSlice";
+import { editModeToggle } from "../features/editableTransactionSlice";
+
 const initialExpenseFormInput = {
   name: "",
   type: "",
   amount: "",
 };
 const Form = () => {
+  const editTransaction = useSelector((state) => state.editTransaction);
   const dispatch = useDispatch();
+  const { editMode, transaction } = editTransaction;
+  useEffect(() => {
+    if (editMode) {
+      setExpenseForm(transaction);
+    }
+  }, [editMode, transaction]);
+
   const [processing, setProcessing] = useState(false);
   const [expenseForm, setExpenseForm] = useState(initialExpenseFormInput);
+
   const handleExpenseInput = (e) => {
     const { name, value } = e.target;
     setExpenseForm((expenses) => {
@@ -28,8 +42,25 @@ const Form = () => {
     setProcessing(false);
   };
 
+  const cancelEditTransaction = () => {
+    dispatch(editModeToggle(false));
+    setExpenseForm(initialExpenseFormInput);
+  };
+
+  const handleUpdatedSubmit = (e) => {
+    e.preventDefault();
+    setProcessing(true);
+    dispatch(updatedExpenseTransaction(expenseForm));
+    dispatch(editModeToggle(false));
+    setExpenseForm(initialExpenseFormInput);
+    setProcessing(false);
+  };
+
   return (
-    <form className="form" onSubmit={handleSubmit}>
+    <form
+      className="form"
+      onSubmit={editMode ? handleUpdatedSubmit : handleSubmit}
+    >
       <h3>Add new transaction</h3>
 
       <div className="form-group">
@@ -40,6 +71,7 @@ const Form = () => {
           value={expenseForm.name}
           placeholder="My Salary"
           onChange={handleExpenseInput}
+          required
         />
       </div>
 
@@ -52,6 +84,7 @@ const Form = () => {
             name="type"
             checked={expenseForm.type === "income" && true}
             onChange={handleExpenseInput}
+            required
           />
           <label htmlFor="type">Income</label>
         </div>
@@ -76,14 +109,18 @@ const Form = () => {
           value={expenseForm.amount}
           name="amount"
           onChange={handleExpenseInput}
+          required
         />
       </div>
 
       <button className="btn" disabled={processing}>
-        Add Transaction
+        {editMode ? "Update Transaction" : "Add Transaction"}
       </button>
-
-      <button className="btn cancel_edit">Cancel Edit</button>
+      {editMode && (
+        <button className="btn cancel_edit" onClick={cancelEditTransaction}>
+          Cancel Edit
+        </button>
+      )}
     </form>
   );
 };
