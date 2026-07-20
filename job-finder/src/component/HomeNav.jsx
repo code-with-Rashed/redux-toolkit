@@ -1,4 +1,16 @@
+import { useDispatch } from "react-redux";
+import { searching, sortingBySalary } from "../features/filters/filterSlice";
+
 const HomeNav = () => {
+  const dispatch = useDispatch();
+  const handleSearch = (e) => {
+    if (e.key === "Enter" || !e.target.value) {
+      dispatch(searching(e.target.value));
+    }
+  };
+  const handleSort = (e) => {
+    dispatch(sortingBySalary(e.target.value));
+  };
   return (
     <div className="md:flex space-y-2 md:space-y-0 justify-between mb-10 ">
       <h1 className="lws-section-title">All Available Jobs</h1>
@@ -10,6 +22,8 @@ const HomeNav = () => {
             placeholder="Search Job"
             className="search-input"
             id="lws-searchJob"
+            name="search"
+            onKeyUp={handleSearch}
           />
         </div>
         <select
@@ -17,10 +31,11 @@ const HomeNav = () => {
           name="sort"
           autoComplete="sort"
           className="flex-1"
+          onChange={handleSort}
         >
           <option>Default</option>
-          <option>Salary (Low to High)</option>
-          <option>Salary (High to Low)</option>
+          <option value="low-to-high">Salary (Low to High)</option>
+          <option value="high-to-low">Salary (High to Low)</option>
         </select>
       </div>
     </div>
