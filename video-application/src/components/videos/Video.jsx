@@ -1,7 +1,7 @@
 import { Link } from "react-router";
 
 const Video = ({ video }) => {
-  const { id, thumbnail, title, author, link, duration, views, date } = video;
+  const { id, thumbnail, title, author, duration, views, date } = video;
   return (
     <div className="col-span-12 sm:col-span-6 md:col-span-3 duration-300 hover:scale-[1.03]">
       <div className="w-full flex flex-col">
@@ -17,7 +17,11 @@ const Video = ({ video }) => {
 
         <div className="flex flex-row mt-2 gap-2">
           <Link to="videos/1" className="shrink-0">
-            <img src={link} className="rounded-full h-6 w-6" alt={author} />
+            <img
+              src="https://yt3.ggpht.com/XnrrHy6dKTuqZXKjwzodba-JuBffuXZN31C5LL9sTLG00I5M9qVX_vjRQCB7_hfZGyW9L2KCux0=s68-c-k-c0x00ffffff-no-rj"
+              className="rounded-full h-6 w-6"
+              alt={author}
+            />
           </Link>
 
           <div clas="flex flex-col">
