@@ -1,7 +1,19 @@
 import Edit from "../../assets/edit.svg";
 import Delete from "../../assets/delete.svg";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import { useDeleteVideoMutation } from "../../features/api/apiSlice";
+import Error from "../ui/Error";
+
 const Description = ({ id, title, description, date }) => {
+  const [deleteVideo, { isError, isLoading }] = useDeleteVideoMutation();
+  const navigate = useNavigate();
+
+  const handleDelete = () => {
+    deleteVideo(id);
+    if (!isError) {
+      navigate("/");
+    }
+  };
   return (
     <div>
       <h1 className="text-lg font-semibold tracking-tight text-slate-800">
@@ -24,11 +36,15 @@ const Description = ({ id, title, description, date }) => {
               Edit
             </Link>
           </div>
-          <div className="flex gap-1">
+          <div
+            className="flex gap-1 cursor-pointer aria-disabled:opacity-50 aria-disabled:cursor-not-allowed aria-disabled:pointer-events-none"
+            aria-disabled={isLoading}
+            onClick={handleDelete}
+          >
             <div className="shrink-0">
               <img className="w-5 block" src={Delete} alt="Delete" />
             </div>
-            <div className="text-sm leading-[1.7142857] text-slate-600 cursor-pointer">
+            <div className="text-sm leading-[1.7142857] text-slate-600">
               Delete
             </div>
           </div>
@@ -38,6 +54,7 @@ const Description = ({ id, title, description, date }) => {
       <div className="mt-4 text-sm text-[#334155] dark:text-slate-400">
         {description}
       </div>
+      {isError && <Error />}
     </div>
   );
 };
