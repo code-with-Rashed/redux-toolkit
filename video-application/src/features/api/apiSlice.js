@@ -25,6 +25,16 @@ export const apiSlice = createApi({
         body: formData,
       }),
     }),
+    editVideo: builder.query({
+      query: (id) => `/videos/${id}`,
+    }),
+    updateVideo: builder.mutation({
+      query: (data) => ({
+        url: `/videos/${data.id}`,
+        method: "PUT",
+        body: data,
+      }),
+    }),
     deleteVideo: builder.mutation({
       query: (id) => ({
         url: `/videos/${id}`,
@@ -38,5 +48,7 @@ export const {
   useGetVideoQuery,
   useGetRelatedVideosQuery,
   useAddVideoMutation,
+  useEditVideoQuery,
+  useUpdateVideoMutation,
   useDeleteVideoMutation,
 } = apiSlice;
