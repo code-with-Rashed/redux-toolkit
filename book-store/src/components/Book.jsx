@@ -1,8 +1,13 @@
 import { Link } from "react-router";
 import Rating from "./Rating";
+import { useDeleteBookMutation } from "../features/api/apiSlice";
 
 const Book = ({ book }) => {
   const { id, name, author, thumbnail, price, rating, featured } = book;
+  const [deleteBook, { isLoading }] = useDeleteBookMutation();
+  const handleDelete = () => {
+    deleteBook(id);
+  };
   return (
     <div className="book-card">
       <img
@@ -36,7 +41,11 @@ const Book = ({ book }) => {
               </Link>
             </button>
 
-            <button className="lws-deleteBook">
+            <button
+              className="lws-deleteBook"
+              disabled={isLoading}
+              onClick={handleDelete}
+            >
               <svg
                 fill="none"
                 viewBox="0 0 24 24"
