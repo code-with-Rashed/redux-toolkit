@@ -1,6 +1,15 @@
+import { useDispatch } from "react-redux";
+import { searching } from "../features/filters/filtersSlice";
+
 const Search = () => {
+  const dispatch = useDispatch();
+  const handleSearch = (e) => {
+    if (e.key === "Enter" || !e.target.value) {
+      dispatch(searching(e.target.value));
+    }
+  };
   return (
-    <form className="flex items-center">
+    <div className="flex items-center">
       <div className="group relative rounded-md bg-white">
         <svg
           width="20"
@@ -19,9 +28,10 @@ const Search = () => {
           placeholder="Filter books..."
           className="search"
           id="lws-search"
+          onKeyUp={handleSearch}
         />
       </div>
-    </form>
+    </div>
   );
 };
 export default Search;
