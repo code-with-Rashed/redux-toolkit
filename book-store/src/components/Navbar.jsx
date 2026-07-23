@@ -1,7 +1,8 @@
-import { Link } from "react-router";
+import { Link, useMatch } from "react-router";
 import Logo from "../assets/react.svg";
 import Search from "./Search";
 const Navbar = () => {
+  const isHomePage = useMatch("/");
   return (
     <nav className="py-4 2xl:px-6">
       <div className="container flex items-center justify-between">
@@ -9,19 +10,27 @@ const Navbar = () => {
 
         <ul className="hidden md:flex items-center space-x-6">
           <Link
-            className="font-semibold cursor-pointer"
+            className={`cursor-pointer ${isHomePage && "font-semibold"}`}
             to="/"
             id="lws-bookStore"
           >
-            <li>Book Store</li>
+            <li className="hover:underline underline-offset-1">Book Store</li>
           </Link>
 
-          <Link to="/books/add" className="cursor-pointer" id="lws-addBook">
-            <li>Add Book</li>
+          <Link
+            to="/books/add"
+            className={`cursor-pointer ${!isHomePage && "font-semibold"}`}
+            id="lws-addBook"
+          >
+            <li
+              className={`${isHomePage && "hover:underline"}  underline-offset-1`}
+            >
+              Add Book
+            </li>
           </Link>
         </ul>
 
-        <Search />
+        {isHomePage && <Search />}
       </div>
     </nav>
   );
