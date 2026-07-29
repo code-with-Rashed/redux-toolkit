@@ -1,15 +1,36 @@
+import { useParams } from "react-router";
+import { useMessagesQuery } from "../../../features/messages/messageApi";
 import ChatHead from "./ChatHead";
 import Messages from "./Messages";
 import SendMessage from "./SendMessage";
+import Error from "../../ui/Error";
 
 const ChatBody = () => {
+  const { id } = useParams();
+  const { data, isLoading, isError, error } = useMessagesQuery(id);
+  let content = null;
+  if (isLoading) {
+    content = (
+      <div className="text-green-400 text-center p-4 m-4">Loading...</div>
+    );
+  } else if (!isLoading && isError) {
+    content = <Error message={error?.error} />;
+  } else if (!isLoading && !isError && data?.length === 0) {
+    content = (
+      <div className="text-green-400 text-center p-4 m-4">No Message found</div>
+    );
+  } else if (!isLoading && !isError && data?.length > 0) {
+    content = (
+      <>
+        <ChatHead user={data[0]} />
+        <Messages messages={data} />
+        <SendMessage />
+      </>
+    );
+  }
   return (
     <div className="w-full lg:col-span-2 lg:block">
-      <div className="w-full grid conversation-row-grid">
-        <ChatHead />
-        <Messages />
-        <SendMessage />
-      </div>
+      <div className="w-full grid conversation-row-grid">{content}</div>
     </div>
   );
 };
