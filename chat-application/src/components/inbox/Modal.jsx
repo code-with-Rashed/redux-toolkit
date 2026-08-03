@@ -86,40 +86,48 @@ const Modal = ({ openModal, controlModal }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const {
+      id: loggedInUserId,
+      email: loggedInUserEmail,
+      name: loggedInUserName,
+    } = loggedInUser || {};
+
     const timestamp = new Date().getTime();
+
     if (conversations && conversations.length === 0) {
-      const {
-        id: loggedInUserId,
-        email: loggedInUserEmail,
-        name: loggedInUserName,
-      } = loggedInUser || {};
       const {
         id: findedUserId,
         email: findedUserEmail,
         name: findedUserName,
       } = findedUser?.[0] || {};
       addCoversation({
-        participants: `${loggedInUserEmail}-${to}`,
-        users: [
-          {
-            email: loggedInUserEmail,
-            name: loggedInUserName,
-            id: loggedInUserId,
-          },
-          {
-            email: findedUserEmail,
-            name: findedUserName,
-            id: findedUserId,
-          },
-        ],
-        message: message,
-        timestamp: timestamp,
+        data: {
+          participants: `${loggedInUserEmail}-${to}`,
+          users: [
+            {
+              email: loggedInUserEmail,
+              name: loggedInUserName,
+              id: loggedInUserId,
+            },
+            {
+              email: findedUserEmail,
+              name: findedUserName,
+              id: findedUserId,
+            },
+          ],
+          message: message,
+          timestamp: timestamp,
+        },
+        loggedInUserEmail,
       });
     } else if (conversations && conversations.length > 0) {
       updateConversation({
-        ...conversations?.[0],
-        message,
-        timestamp,
+        data: {
+          ...conversations?.[0],
+          message,
+          timestamp,
+        },
+        loggedInUserEmail,
       });
     }
   };

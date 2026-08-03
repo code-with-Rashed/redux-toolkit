@@ -26,11 +26,14 @@ const SendMessage = ({ user }) => {
       timestamp,
     });
     updateConversation({
-      id: conversationId,
-      participants: `${currentSender.email}-${currentReceiver.email}`,
-      users: [currentSender, currentReceiver],
-      message,
-      timestamp,
+      data: {
+        id: conversationId,
+        participants: `${currentSender.email}-${currentReceiver.email}`,
+        users: [currentSender, currentReceiver],
+        message,
+        timestamp,
+      },
+      loggedInUserEmail: loggedInUser?.email,
     });
     setMessage("");
   };
