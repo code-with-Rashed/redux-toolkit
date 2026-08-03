@@ -24,7 +24,7 @@ const ChatBody = () => {
       <>
         <ChatHead user={data[0]} />
         <Messages messages={data} />
-        <SendMessage />
+        <SendMessage user={data[0]}/>
       </>
     );
   }

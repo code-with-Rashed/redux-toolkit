@@ -8,10 +8,7 @@ import conversationsApi, {
   useAddCoversationMutation,
   useUpdateConversationMutation,
 } from "../../features/conversations/conversationsApi";
-import {
-  useAddMessageMutation,
-  useUpdateMessageMutation,
-} from "../../features/messages/messageApi";
+import { useAddMessageMutation } from "../../features/messages/messageApi";
 
 const Modal = ({ openModal, controlModal }) => {
   const dispatch = useDispatch();
@@ -44,7 +41,6 @@ const Modal = ({ openModal, controlModal }) => {
   ] = useUpdateConversationMutation();
 
   const [addMessage] = useAddMessageMutation();
-  const [updateMessage] = useUpdateMessageMutation();
 
   useEffect(() => {
     if (to === loggedInUser?.email) {
@@ -129,8 +125,9 @@ const Modal = ({ openModal, controlModal }) => {
   };
 
   useEffect(() => {
-    if (isAddConversationSucceed) {
-      const { id, message, timestamp } = addConversationResponse || {};
+    if (isAddConversationSucceed || isUpdateConversationSucceed) {
+      const { id, message, timestamp } =
+        addConversationResponse || updateConversationResponse || {};
       const {
         id: loggedInUserId,
         email: loggedInUserEmail,
@@ -159,39 +156,8 @@ const Modal = ({ openModal, controlModal }) => {
       });
       controlModal();
     }
-  }, [isAddConversationSucceed]);
+  }, [isAddConversationSucceed, isUpdateConversationSucceed]);
 
-  useEffect(() => {
-    if (isUpdateConversationSucceed) {
-      const { id, message, timestamp } = updateConversationResponse || {};
-      const {
-        id: loggedInUserId,
-        email: loggedInUserEmail,
-        name: loggedInUserName,
-      } = loggedInUser || {};
-      const {
-        id: findedUserId,
-        email: findedUserEmail,
-        name: findedUserName,
-      } = findedUser?.[0] || {};
-      updateMessage({
-        conversationId: id,
-        sender: {
-          email: loggedInUserEmail,
-          name: loggedInUserName,
-          id: loggedInUserId,
-        },
-        receiver: {
-          email: findedUserEmail,
-          name: findedUserName,
-          id: findedUserId,
-        },
-        message,
-        timestamp,
-      });
-      controlModal();
-    }
-  }, [isUpdateConversationSucceed]);
   return (
     openModal && (
       <>
@@ -217,7 +183,6 @@ const Modal = ({ openModal, controlModal }) => {
                   required
                   className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-violet-500 focus:border-violet-500 focus:z-10 sm:text-sm"
                   placeholder="Send to"
-                  required
                   onChange={(e) => handleEmail(e.target.value)}
                 />
               </div>
@@ -232,7 +197,6 @@ const Modal = ({ openModal, controlModal }) => {
                   required
                   className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-violet-500 focus:border-violet-500 focus:z-10 sm:text-sm"
                   placeholder="Message"
-                  required
                   onChange={(e) => setMessage(e.target.value)}
                 />
               </div>
