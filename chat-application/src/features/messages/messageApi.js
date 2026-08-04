@@ -13,6 +13,20 @@ const messageApi = apiSlice.injectEndpoints({
         method: "POST",
         body: data,
       }),
+      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+        const succeded = await queryFulfilled;
+        if (succeded?.data?.id) {
+          dispatch(
+            messageApi.util.updateQueryData(
+              "messages",
+              arg.conversationId.toString(),
+              (draft) => {
+                draft.unshift(succeded?.data);
+              },
+            ),
+          );
+        }
+      },
     }),
   }),
 });
