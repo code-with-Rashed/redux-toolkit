@@ -5,7 +5,7 @@ import Error from "../ui/Error";
 import Auth from "../../utilities/Auth";
 import { useDispatch } from "react-redux";
 import conversationsApi, {
-  useAddCoversationMutation,
+  useAddConversationMutation,
   useUpdateConversationMutation,
 } from "../../features/conversations/conversationsApi";
 import { useAddMessageMutation } from "../../features/messages/messageApi";
@@ -28,9 +28,9 @@ const Modal = ({ openModal, controlModal }) => {
   });
 
   const [
-    addCoversation,
+    addConversation,
     { data: addConversationResponse, isSuccess: isAddConversationSucceed },
-  ] = useAddCoversationMutation();
+  ] = useAddConversationMutation();
 
   const [
     updateConversation,
@@ -100,7 +100,7 @@ const Modal = ({ openModal, controlModal }) => {
         email: findedUserEmail,
         name: findedUserName,
       } = findedUser?.[0] || {};
-      addCoversation({
+      addConversation({
         data: {
           participants: `${loggedInUserEmail}-${to}`,
           users: [

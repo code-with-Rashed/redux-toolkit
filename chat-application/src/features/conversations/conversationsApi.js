@@ -4,7 +4,33 @@ const conversationsApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getConversations: builder.query({
       query: (withLoggedinUser) =>
-        `conversations?participants_like=${withLoggedinUser}`,
+        `conversations?participants_like=${withLoggedinUser}&_sort=timestamp&_order=desc&_page=1&_limit=${import.meta.env.VITE_SHOW_CONVERSATIONS_PER_PAGE}`,
+      transformResponse: (data, meta) => {
+        const totalConversation = meta.response.headers.get("x-total-count");
+        return {
+          data,
+          totalConversation,
+        };
+      },
+    }),
+
+    getMoreConversations: builder.query({
+      query: ({ withLoggedinUser, nextPage }) =>
+        `conversations?participants_like=${withLoggedinUser}&_sort=timestamp&_order=desc&_page=${nextPage}&_limit=${import.meta.env.VITE_SHOW_CONVERSATIONS_PER_PAGE}`,
+      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+        const moreConversations = await queryFulfilled;
+        if (moreConversations.data?.length > 0) {
+          dispatch(
+            conversationsApi.util.updateQueryData(
+              "getConversations",
+              arg.withLoggedinUser,
+              (draft) => {
+                draft.data = [...draft.data, ...moreConversations.data];
+              },
+            ),
+          );
+        }
+      },
     }),
 
     getConversation: builder.query({
@@ -13,7 +39,7 @@ const conversationsApi = apiSlice.injectEndpoints({
       },
     }),
 
-    addCoversation: builder.mutation({
+    addConversation: builder.mutation({
       query: ({ data, loggedInUserEmail }) => ({
         url: "conversations",
         method: "POST",
@@ -27,7 +53,7 @@ const conversationsApi = apiSlice.injectEndpoints({
               "getConversations",
               arg.loggedInUserEmail,
               (draft) => {
-                draft.push(succeded?.data);
+                draft?.data.push(succeded?.data);
               },
             ),
           );
@@ -47,7 +73,7 @@ const conversationsApi = apiSlice.injectEndpoints({
             "getConversations",
             arg.loggedInUserEmail,
             (draft) => {
-              const conversation = draft?.find(
+              const conversation = draft?.data.find(
                 (conversation) => conversation?.id === arg.data?.id,
               );
               if (conversation) {
@@ -68,8 +94,9 @@ const conversationsApi = apiSlice.injectEndpoints({
 });
 export const {
   useGetConversationsQuery,
+  useGetMoreConversationsQuery,
   useGetConversationQuery,
-  useAddCoversationMutation,
+  useAddConversationMutation,
   useUpdateConversationMutation,
 } = conversationsApi;
 export default conversationsApi;

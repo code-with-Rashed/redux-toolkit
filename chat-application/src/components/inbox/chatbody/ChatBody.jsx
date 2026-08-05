@@ -8,6 +8,8 @@ import Error from "../../ui/Error";
 const ChatBody = () => {
   const { id } = useParams();
   const { data, isLoading, isError, error } = useMessagesQuery(id);
+  const { data: messages, totalMessages } = data || {};
+
   let content = null;
   if (isLoading) {
     content = (
@@ -15,16 +17,16 @@ const ChatBody = () => {
     );
   } else if (!isLoading && isError) {
     content = <Error message={error?.error} />;
-  } else if (!isLoading && !isError && data?.length === 0) {
+  } else if (!isLoading && !isError && messages?.length === 0) {
     content = (
       <div className="text-green-400 text-center p-4 m-4">No Message found</div>
     );
-  } else if (!isLoading && !isError && data?.length > 0) {
+  } else if (!isLoading && !isError && messages?.length > 0) {
     content = (
       <>
-        <ChatHead user={data[0]} />
-        <Messages messages={data} />
-        <SendMessage user={data[0]}/>
+        <ChatHead user={messages[0]} />
+        <Messages messages={messages} totalMessages={totalMessages} id={id}/>
+        <SendMessage user={messages[0]} />
       </>
     );
   }

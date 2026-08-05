@@ -1,8 +1,10 @@
-const Message = ({ justify, message }) => {
+const Message = ({ justify, message, id }) => {
   return (
     <li className={`flex justify-${justify}`}>
       <div className="relative max-w-xl px-4 py-2 text-gray-700 rounded shadow">
-        <span className="block">{message}</span>
+        <span className="block">
+          {id} = {message}
+        </span>
       </div>
     </li>
   );
