@@ -51,6 +51,28 @@ const taskApi = apiSlice.injectEndpoints({
         }
       },
     }),
+    updateStatus: builder.mutation({
+      query: (data) => ({
+        url: `/tasks/${data.id}`,
+        method: "PATCH",
+        body: data,
+      }),
+      async onQueryStarted(args, { queryFulfilled, dispatch }) {
+        const cacheUpdate = dispatch(
+          taskApi.util.updateQueryData("getTasks", undefined, (draft) => {
+            const findDraftTask = draft.find((task) => task.id == args.id);
+            if (findDraftTask) {
+              findDraftTask.status = args.status;
+            }
+          }),
+        );
+        try {
+          await queryFulfilled;
+        } catch (error) {
+          cacheUpdate.undo();
+        }
+      },
+    }),
   }),
 });
 export const {
@@ -58,4 +80,5 @@ export const {
   useAddTaskMutation,
   useGetTaskQuery,
   useEditTaskMutation,
+  useUpdateStatusMutation,
 } = taskApi;

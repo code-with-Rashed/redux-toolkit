@@ -1,8 +1,14 @@
 import { Link } from "react-router";
 import moment from "moment";
+import { useUpdateStatusMutation } from "../../features/tasks/tasksApi";
+import { useEffect } from "react";
 
 const Task = ({ task }) => {
   const { id, taskName, deadline, teamMember, project, status } = task;
+  const [updateStatus] = useUpdateStatusMutation();
+  const changeStatus = (status) => {
+    updateStatus({ id, status });
+  };
   return (
     <div className="lws-task">
       <div className="flex items-center gap-2 text-slate">
@@ -60,7 +66,11 @@ const Task = ({ task }) => {
           </Link>
         )}
 
-        <select className="lws-status" defaultValue={status}>
+        <select
+          className="lws-status"
+          defaultValue={status}
+          onChange={(e) => changeStatus(e.target.value)}
+        >
           <option value="pending">Pending</option>
           <option value="inProgress">In Progress</option>
           <option value="completed">Completed</option>
