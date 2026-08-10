@@ -1,4 +1,99 @@
+import { useNavigate, useParams } from "react-router";
+import {
+  useEditTaskMutation,
+  useGetTaskQuery,
+} from "../features/tasks/tasksApi";
+import { useEffect, useState } from "react";
+import { useGetProjectsQuery } from "../features/projects/projectsApi";
+import { useGetTeamsQuery } from "../features/team/teamApi";
+const initialTask = {
+  taskName: "",
+  deadline: "",
+  status: "pending",
+  teamMember: {
+    name: "",
+    avatar: "",
+    id: "",
+  },
+  project: {
+    id: "",
+    projectName: "",
+    colorClass: "",
+  },
+};
 const Edit = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const { data: taskData, isSuccess: isGetTaskSucceed } = useGetTaskQuery(id);
+  const { data: projectsData, isSuccess: isProjectsDataSucceed } =
+    useGetProjectsQuery();
+  const { data: teamsData, isSuccess: isTeamsDataSucceed } = useGetTeamsQuery();
+  const [editTask, { isSuccess: isEditTaskSucceed }] = useEditTaskMutation();
+  const [task, setTask] = useState(initialTask);
+
+  let teams = null;
+  let projects = null;
+  if (isTeamsDataSucceed) {
+    teams = teamsData.map((team) => (
+      <option key={team.id} value={team.id}>
+        {team.name}
+      </option>
+    ));
+  }
+  if (isProjectsDataSucceed) {
+    projects = projectsData.map((project) => (
+      <option key={project.id} value={project.id}>
+        {project.projectName}
+      </option>
+    ));
+  }
+
+  const handleInput = (e) => {
+    const { name, value } = e.target;
+    switch (name) {
+      case "team":
+        const findTeam = teamsData.find((team) => team.id == value);
+        setTask((prev) => {
+          return {
+            ...prev,
+            teamMember: findTeam,
+          };
+        });
+        break;
+      case "project":
+        const findProject = projectsData.find((project) => project.id == value);
+        setTask((prev) => {
+          return {
+            ...prev,
+            project: findProject,
+          };
+        });
+        break;
+      default:
+        setTask((prev) => {
+          return {
+            ...prev,
+            [name]: value,
+          };
+        });
+    }
+  };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    editTask(task);
+  };
+
+  useEffect(() => {
+    if (isGetTaskSucceed) {
+      setTask(taskData);
+    }
+  }, [isGetTaskSucceed]);
+
+  useEffect(() => {
+    if (isEditTaskSucceed) {
+      navigate("/");
+    }
+  }, [isEditTaskSucceed, navigate]);
   return (
     <>
       <h1 className="mt-4 mb-8 text-3xl font-bold text-center text-gray-800">
@@ -6,7 +101,7 @@ const Edit = () => {
       </h1>
 
       <div className="justify-center mb-10 space-y-2 md:flex md:space-y-0">
-        <form className="space-y-6">
+        <form className="space-y-6" onSubmit={handleSubmit}>
           <div className="fieldContainer">
             <label htmlFor="lws-taskName">Task Name</label>
             <input
@@ -15,42 +110,46 @@ const Edit = () => {
               id="lws-taskName"
               required
               placeholder="Implement RTK Query"
+              value={task?.taskName}
+              onChange={handleInput}
             />
           </div>
 
           <div className="fieldContainer">
-            <label>Assign To</label>
-            <select name="teamMember" id="lws-teamMember" required>
-              <option value="" hidden selected>
-                Select Job
-              </option>
-              <option>Sumit Saha</option>
-              <option>Sadh Hasan</option>
-              <option>Akash Ahmed</option>
-              <option>Md Salahuddin</option>
-              <option>Riyadh Hassan</option>
-              <option>Ferdous Hassan</option>
-              <option>Arif Almas</option>
+            <label htmlFor="lws-teamMember">Assign To</label>
+            <select
+              name="team"
+              id="lws-teamMember"
+              required
+              onChange={handleInput}
+              value={task?.teamMember?.id}
+            >
+              {teams}
             </select>
           </div>
           <div className="fieldContainer">
             <label htmlFor="lws-projectName">Project Name</label>
-            <select id="lws-projectName" name="projectName" required>
-              <option value="" hidden selected>
-                Select Project
-              </option>
-              <option>Scoreboard</option>
-              <option>Flight Booking</option>
-              <option>Product Cart</option>
-              <option>Book Store</option>
-              <option>Blog Application</option>
-              <option>Job Finder</option>
+            <select
+              id="lws-projectName"
+              name="project"
+              required
+              onChange={handleInput}
+              value={task?.project?.id}
+            >
+              {projects}
             </select>
           </div>
 
           <div className="fieldContainer">
             <label htmlFor="lws-deadline">Deadline</label>
-            <input type="date" name="deadline" id="lws-deadline" required />
+            <input
+              type="date"
+              name="deadline"
+              id="lws-deadline"
+              required
+              value={task?.deadline}
+              onChange={handleInput}
+            />
           </div>
 
           <div className="text-right">

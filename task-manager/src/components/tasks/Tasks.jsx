@@ -8,7 +8,6 @@ const Tasks = () => {
     content = <strong>Loading...</strong>;
   }
   if (!isLoading && isError) {
-    console.log(error);
     content = <strong className="error">{error?.error}</strong>;
   }
   if (!isLoading && !isError) {

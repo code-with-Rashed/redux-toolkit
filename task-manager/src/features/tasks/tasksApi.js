@@ -22,6 +22,40 @@ const taskApi = apiSlice.injectEndpoints({
         }
       },
     }),
+    getTask: builder.query({
+      query: (id) => `/tasks/${id}`,
+    }),
+    editTask: builder.mutation({
+      query: (task) => ({
+        url: `/tasks/${task.id}`,
+        method: "PATCH",
+        body: task,
+      }),
+      async onQueryStarted(args, { queryFulfilled, dispatch }) {
+        const cacheUpdate = dispatch(
+          taskApi.util.updateQueryData("getTasks", undefined, (draft) => {
+            let findTaskDraft = draft.find((task) => task.id == args.id);
+            if (findTaskDraft) {
+              findTaskDraft.taskName = args.taskName;
+              findTaskDraft.deadline = args.deadline;
+              findTaskDraft.status = args.status;
+              findTaskDraft.teamMember = args.teamMember;
+              findTaskDraft.project = args.project;
+            }
+          }),
+        );
+        try {
+          await queryFulfilled;
+        } catch (error) {
+          cacheUpdate.undo();
+        }
+      },
+    }),
   }),
 });
-export const { useGetTasksQuery, useAddTaskMutation } = taskApi;
+export const {
+  useGetTasksQuery,
+  useAddTaskMutation,
+  useGetTaskQuery,
+  useEditTaskMutation,
+} = taskApi;
