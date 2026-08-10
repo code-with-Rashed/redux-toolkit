@@ -73,6 +73,24 @@ const taskApi = apiSlice.injectEndpoints({
         }
       },
     }),
+    deleteTask: builder.mutation({
+      query: (id) => ({
+        url: `/tasks/${id}`,
+        method: "DELETE",
+      }),
+      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+        const cacheUpdate = dispatch(
+          taskApi.util.updateQueryData("getTasks", undefined, (draft) => {
+            return draft.filter((task) => task.id != arg);
+          }),
+        );
+        try {
+          await queryFulfilled;
+        } catch (error) {
+          cacheUpdate.undo();
+        }
+      },
+    }),
   }),
 });
 export const {
@@ -81,4 +99,5 @@ export const {
   useGetTaskQuery,
   useEditTaskMutation,
   useUpdateStatusMutation,
+  useDeleteTaskMutation,
 } = taskApi;

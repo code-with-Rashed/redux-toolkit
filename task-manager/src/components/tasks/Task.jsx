@@ -1,13 +1,22 @@
 import { Link } from "react-router";
 import moment from "moment";
-import { useUpdateStatusMutation } from "../../features/tasks/tasksApi";
+import {
+  useDeleteTaskMutation,
+  useUpdateStatusMutation,
+} from "../../features/tasks/tasksApi";
 import { useEffect } from "react";
 
 const Task = ({ task }) => {
   const { id, taskName, deadline, teamMember, project, status } = task;
   const [updateStatus] = useUpdateStatusMutation();
+  const [deleteTask] = useDeleteTaskMutation();
+
   const changeStatus = (status) => {
     updateStatus({ id, status });
+  };
+
+  const handleDelete = () => {
+    deleteTask(id);
   };
   return (
     <div className="lws-task">
@@ -32,7 +41,7 @@ const Task = ({ task }) => {
           <p className="lws-task-assignedOn">{teamMember.name}</p>
         </div>
         {status === "completed" ? (
-          <button className="lws-delete">
+          <button className="lws-delete" onClick={handleDelete}>
             <svg
               fill="none"
               viewBox="0 0 24 24"
