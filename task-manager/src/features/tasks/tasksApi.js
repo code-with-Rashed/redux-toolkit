@@ -32,22 +32,20 @@ const taskApi = apiSlice.injectEndpoints({
         body: task,
       }),
       async onQueryStarted(args, { queryFulfilled, dispatch }) {
-        const cacheUpdate = dispatch(
-          taskApi.util.updateQueryData("getTasks", undefined, (draft) => {
-            let findTaskDraft = draft.find((task) => task.id == args.id);
-            if (findTaskDraft) {
-              findTaskDraft.taskName = args.taskName;
-              findTaskDraft.deadline = args.deadline;
-              findTaskDraft.status = args.status;
-              findTaskDraft.teamMember = args.teamMember;
-              findTaskDraft.project = args.project;
-            }
-          }),
-        );
-        try {
-          await queryFulfilled;
-        } catch (error) {
-          cacheUpdate.undo();
+        const editedTask = await queryFulfilled;
+        if (editedTask?.data?.id) {
+          dispatch(
+            taskApi.util.updateQueryData("getTasks", undefined, (draft) => {
+              let findTaskDraft = draft.find((task) => task.id == args.id);
+              if (findTaskDraft) {
+                findTaskDraft.taskName = editedTask?.data?.taskName;
+                findTaskDraft.deadline = editedTask?.data?.deadline;
+                findTaskDraft.status = editedTask?.data?.status;
+                findTaskDraft.teamMember = editedTask?.data?.teamMember;
+                findTaskDraft.project = editedTask?.data?.project;
+              }
+            }),
+          );
         }
       },
     }),
