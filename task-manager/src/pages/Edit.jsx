@@ -87,7 +87,7 @@ const Edit = () => {
     if (isGetTaskSucceed) {
       setTask(taskData);
     }
-  }, [isGetTaskSucceed]);
+  }, [isGetTaskSucceed, taskData]);
 
   useEffect(() => {
     if (isEditTaskSucceed) {

@@ -4,7 +4,6 @@ import {
   useDeleteTaskMutation,
   useUpdateStatusMutation,
 } from "../../features/tasks/tasksApi";
-import { useEffect } from "react";
 
 const Task = ({ task }) => {
   const { id, taskName, deadline, teamMember, project, status } = task;
