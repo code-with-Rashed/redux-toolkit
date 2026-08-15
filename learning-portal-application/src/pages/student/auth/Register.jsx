@@ -1,4 +1,5 @@
 import Logo from "@/assets/react.svg";
+import { Link } from "react-router-dom";
 const Register = () => {
   return (
     <section className="py-6 bg-primary h-screen grid place-items-center">
@@ -69,7 +70,16 @@ const Register = () => {
               />
             </div>
           </div>
-
+          <div className="flex items-center justify-end">
+            <div className="text-sm">
+              <Link
+                to="/"
+                className="font-medium text-violet-600 hover:text-violet-500"
+              >
+                I have already an account.
+              </Link>
+            </div>
+          </div>
           <div>
             <button
               type="submit"

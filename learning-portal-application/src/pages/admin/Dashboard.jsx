@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 const Dashboard = () => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2  gap-6 p-8">
-      <Link to="admin/videos" className="dashboard-item-card">
+      <Link to="/admin/videos" className="dashboard-item-card">
         <svg
           fill="none"
           viewBox="0 0 24 24"

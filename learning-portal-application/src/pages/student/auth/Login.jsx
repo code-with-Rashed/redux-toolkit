@@ -1,4 +1,5 @@
 import Logo from "@/assets/react.svg";
+import { Link } from "react-router-dom";
 const Login = () => {
   return (
     <section className="py-6 bg-primary h-screen grid place-items-center">
@@ -44,12 +45,12 @@ const Login = () => {
 
           <div className="flex items-center justify-end">
             <div className="text-sm">
-              <a
-                href="./StudentReistration.html"
+              <Link
+                to="/register"
                 className="font-medium text-violet-600 hover:text-violet-500"
               >
                 Create New Account
-              </a>
+              </Link>
             </div>
           </div>
 

@@ -14,10 +14,10 @@ import EditVideo from "@/pages/admin/videos/EditVideo";
 import Assignments from "@/pages/admin/assignment/assignments";
 import AddAssignment from "@/pages/admin/assignment/AddAssignment";
 import EditAssignment from "@/pages/admin/assignment/EditAssignment";
-import Quizzes from "./pages/admin/quiz/Quizzes";
-import AddQuiz from "./pages/admin/quiz/AddQuiz";
-import EditQuiz from "./pages/admin/quiz/EditQuiz";
-import AssignmentsMarks from "./pages/admin/assignment-mark/AssignmentsMarks";
+import Quizzes from "@/pages/admin/quiz/Quizzes";
+import AddQuiz from "@/pages/admin/quiz/AddQuiz";
+import EditQuiz from "@/pages/admin/quiz/EditQuiz";
+import AssignmentsMarks from "@/pages/admin/assignment-mark/AssignmentsMarks";
 
 function App() {
   return (
@@ -27,8 +27,8 @@ function App() {
         <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route element={<StudentPortalLayout />}>
-          <Route path="/course" element={<Course />} />
-          <Route path="/quiz" element={<Quiz />} />
+          <Route path="/course/video?/:id?" element={<Course />} />
+          <Route path="/quiz/:id" element={<Quiz />} />
           <Route path="/leaderboard" element={<Leaderboard />} />
         </Route>
 
