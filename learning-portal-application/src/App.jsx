@@ -40,7 +40,7 @@ function App() {
 
           <Route path="/admin/videos" element={<Videos />} />
           <Route path="/admin/video/add" element={<AddVideo />} />
-          <Route path="video/edit/:id" element={<EditVideo />} />
+          <Route path="/admin/video/edit/:id" element={<EditVideo />} />
 
           <Route path="/admin/assignments" element={<Assignments />} />
           <Route path="/admin/assignment/add" element={<AddAssignment />} />
