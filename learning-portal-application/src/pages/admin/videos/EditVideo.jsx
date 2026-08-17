@@ -36,7 +36,7 @@ const EditVideo = () => {
     if (isError) {
       navigate("/admin/videos");
     }
-  }, [isSuccess, isError]);
+  }, [isSuccess, isError, data, navigate]);
 
   const handleInput = (e) => {
     const { name, value } = e.target;
@@ -57,7 +57,7 @@ const EditVideo = () => {
     if (isUpdateVideoSuccess) {
       navigate("/admin/videos");
     }
-  }, [isUpdateVideoSuccess]);
+  }, [isUpdateVideoSuccess, navigate]);
 
   return (
     <div className="mx-auto max-w-md px-5 lg:px-0">

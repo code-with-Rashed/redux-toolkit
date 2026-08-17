@@ -62,7 +62,7 @@ const videosApi = apiSlice.injectEndpoints({
         );
         try {
           await queryFulfilled;
-        } catch (error) {
+        } catch {
           deleted.undo();
         }
       },

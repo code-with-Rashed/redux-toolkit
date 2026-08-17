@@ -37,7 +37,7 @@ const AddVideo = () => {
     if (isSuccess) {
       navigate("/admin/videos");
     }
-  }, [isSuccess]);
+  }, [isSuccess, navigate]);
   return (
     <div className="mx-auto max-w-md px-5 lg:px-0">
       <div>
