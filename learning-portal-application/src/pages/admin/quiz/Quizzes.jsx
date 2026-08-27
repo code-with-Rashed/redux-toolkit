@@ -5,7 +5,7 @@ const Quizzes = () => {
   return (
     <>
       <div className="w-full flex">
-        <Link to="/admin/quizzes/add">Add Quiz</Link>
+        <Link className="btn ml-auto" to="/admin/quizzes/add">Add Quiz</Link>
       </div>
       <div className="overflow-x-auto mt-4">
         <QuizzesList />

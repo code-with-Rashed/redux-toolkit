@@ -1,4 +1,24 @@
+import { useNavigate, useParams } from "react-router-dom";
+import { useQuizeQuery } from "../../../features/quizzes/quizzesApi";
+import { useEffect } from "react";
+
 const EditQuiz = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const {
+    data,
+    isSuccess: isQuizFound,
+    isError: isQuizNotFound,
+  } = useQuizeQuery(id);
+  useEffect(() => {
+    if (isQuizFound) {
+      console.log(data);
+    }
+    if (isQuizNotFound) {
+      navigate("/admin/quizzes");
+    }
+  }, [isQuizFound, isQuizNotFound, navigate]);
+
   return (
     <div className="mx-auto max-w-md px-5 lg:px-0">
       <div>
