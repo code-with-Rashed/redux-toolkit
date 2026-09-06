@@ -114,7 +114,7 @@ const AddQuiz = () => {
     if (isNewQuizSaved) {
       navigate("/admin/quizzes");
     }
-  }, [isNewQuizSaved]);
+  }, [isNewQuizSaved, navigate]);
 
   return (
     <div className="mx-auto max-w-md px-5 lg:px-0">
