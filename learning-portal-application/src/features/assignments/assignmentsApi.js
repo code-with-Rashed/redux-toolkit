@@ -7,6 +7,7 @@ const assignmentsApi = apiSlice.injectEndpoints({
     }),
     assignment: builder.query({
       query: (id) => `/assignments/${id}`,
+      providesTags: (result, error, arg) => [{ type: "Assignment", id: arg }],
     }),
     addAssignment: builder.mutation({
       query: (assignment) => ({
@@ -49,6 +50,11 @@ const assignmentsApi = apiSlice.injectEndpoints({
                 draft[findIndex] = succed.data;
               },
             ),
+          );
+          dispatch(
+            assignmentsApi.util.invalidateTags([
+              { type: "Assignment", id: succed.data.id },
+            ]),
           );
         }
       },

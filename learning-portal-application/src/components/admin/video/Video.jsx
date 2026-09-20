@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import tuncateText from "@/utilities/truncateText";
-import { useDeleteVideoMutation } from "../../../features/videos/videosApi";
+import { useDeleteVideoMutation } from "@/features/videos/videosApi";
 
 const Video = ({ video }) => {
   const { id, title, description } = video;
@@ -11,7 +11,9 @@ const Video = ({ video }) => {
   return (
     <tr>
       <td className="table-td">{title}</td>
-      <td className="table-td">{tuncateText(description, 60)}</td>
+      <td className="table-td" title={description}>
+        {tuncateText(description, 60)}
+      </td>
       <td className="table-td flex gap-x-2">
         <button onClick={handleDelete} disabled={isLoading}>
           <svg

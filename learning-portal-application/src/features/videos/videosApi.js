@@ -7,6 +7,7 @@ const videosApi = apiSlice.injectEndpoints({
     }),
     video: builder.query({
       query: (id) => `/videos/${id}`,
+      providesTags: (result, error, arg) => [{ type: "Video", id: arg }],
     }),
     lastVideo: builder.query({
       query: () => "/videos?_sort=id&_order=desc&_limit=1",
@@ -44,6 +45,11 @@ const videosApi = apiSlice.injectEndpoints({
               );
               draft[findIndex] = succeed.data;
             }),
+          );
+          dispatch(
+            videosApi.util.invalidateTags([
+              { type: "Video", id: succeed.data.id },
+            ]),
           );
         }
       },

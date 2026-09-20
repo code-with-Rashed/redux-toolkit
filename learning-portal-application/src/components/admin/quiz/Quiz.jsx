@@ -6,7 +6,9 @@ const Quiz = ({ quiz }) => {
   return (
     <tr>
       <td className="table-td">{tuncateText(question, 65)}</td>
-      <td className="table-td">{tuncateText(video_title, 60)}</td>
+      <td className="table-td" title={video_title}>
+        {tuncateText(video_title, 60)}
+      </td>
       <td className="table-td flex gap-x-2 justify-center">
         <svg
           fill="none"
