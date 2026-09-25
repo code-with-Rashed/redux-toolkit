@@ -18,15 +18,48 @@ import Quizzes from "@/pages/admin/quiz/Quizzes";
 import AddQuiz from "@/pages/admin/quiz/AddQuiz";
 import EditQuiz from "@/pages/admin/quiz/EditQuiz";
 import AssignmentsMarks from "@/pages/admin/assignment-mark/AssignmentsMarks";
+import PrivateRoute from "@/components/routes/PrivateRoute";
+import PublicRoute from "@/components/routes/PublicRoute";
+import AdminPrivateRoute from "@/components/routes/AdminPrivateRoute";
+import useAuthCheck from "./hooks/useAuthCheck";
+import AdminPublicRoute from "@/components/routes/AdminPublicRoute";
+import Loading from "@/components/ui/Loading";
 
 function App() {
-  return (
+  const { isAuthenticateUserParsist } = useAuthCheck();
+  return !isAuthenticateUserParsist ? (
+    <div className="flex justify-center my-4 font-bold">
+      <Loading message="Authentication checking...." />
+    </div>
+  ) : (
     <BrowserRouter>
       <Routes>
         {/* student panel related routes */}
-        <Route path="/" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route element={<StudentPortalLayout />}>
+        <Route
+          path="/"
+          element={
+            <PublicRoute>
+              {" "}
+              <Login />
+            </PublicRoute>
+          }
+        />
+        <Route
+          path="/register"
+          element={
+            <PublicRoute>
+              <Register />
+            </PublicRoute>
+          }
+        />
+
+        <Route
+          element={
+            <PrivateRoute>
+              <StudentPortalLayout />
+            </PrivateRoute>
+          }
+        >
           <Route path="/course/video?/:id?" element={<Course />} />
           <Route path="/quiz/:id" element={<Quiz />} />
           <Route path="/leaderboard" element={<Leaderboard />} />
@@ -34,8 +67,21 @@ function App() {
 
         {/* admin panel related routes */}
 
-        <Route path="/admin" element={<AdminLogin />} />
-        <Route element={<AdminLayout />}>
+        <Route
+          path="/admin"
+          element={
+            <AdminPublicRoute>
+              <AdminLogin />
+            </AdminPublicRoute>
+          }
+        />
+        <Route
+          element={
+            <AdminPrivateRoute>
+              <AdminLayout />
+            </AdminPrivateRoute>
+          }
+        >
           <Route path="/admin/dashboard" element={<Dashboard />} />
 
           <Route path="/admin/videos" element={<Videos />} />

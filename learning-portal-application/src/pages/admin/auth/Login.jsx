@@ -1,5 +1,24 @@
 import Logo from "@/assets/react.svg";
+import { useState, useEffect } from "react";
+import { useAdminLoginMutation } from "@/features/auth/authApi";
+import { useNavigate } from "react-router-dom";
 const AdminLogin = () => {
+  const [adminLogin, { isLoading, isError, error, isSuccess }] =
+    useAdminLoginMutation();
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const handleLogin = (e) => {
+    e.preventDefault();
+    adminLogin({ email, password, role: "admin" });
+  };
+  useEffect(() => {
+    if (isSuccess) {
+      navigate("/admin/dashboard");
+    }
+    if (isError) {
+    }
+  }, [isSuccess, isError, error, navigate]);
   return (
     <section className="py-6 bg-primary h-screen grid place-items-center">
       <div className="mx-auto max-w-md px-5 lg:px-0">
@@ -9,7 +28,7 @@ const AdminLogin = () => {
             Sign in to Admin Account
           </h2>
         </div>
-        <form className="mt-8 space-y-6" action="#" method="POST">
+        <form className="mt-8 space-y-6" onSubmit={handleLogin}>
           <input type="hidden" name="remember" value="true" />
           <div className="rounded-md shadow-sm -space-y-px">
             <div>
@@ -24,6 +43,7 @@ const AdminLogin = () => {
                 required
                 className="login-input rounded-t-md"
                 placeholder="Email address"
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
             <div>
@@ -38,6 +58,7 @@ const AdminLogin = () => {
                 required
                 className="login-input rounded-b-md"
                 placeholder="Password"
+                onChange={(e) => setPassword(e.target.value)}
               />
             </div>
           </div>
@@ -57,6 +78,7 @@ const AdminLogin = () => {
             <button
               type="submit"
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-violet-600 hover:bg-violet-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-500"
+              disabled={isLoading}
             >
               Sign in
             </button>

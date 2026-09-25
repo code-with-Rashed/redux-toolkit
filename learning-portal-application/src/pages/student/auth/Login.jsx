@@ -1,6 +1,30 @@
 import Logo from "@/assets/react.svg";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useLoginMutation } from "@/features/auth/authApi";
+import { Link, useNavigate } from "react-router-dom";
+import Error from "@/components/ui/Error";
+
 const Login = () => {
+  const [login, { isLoading, isSuccess, isError, error }] = useLoginMutation();
+  const navigate = useNavigate();
+  const [errorMsg, setErrorMsg] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const loginHandler = (e) => {
+    e.preventDefault();
+    login({ email, password, role: "student" });
+  };
+
+  useEffect(() => {
+    if (isSuccess) {
+      navigate("/course");
+    }
+    if (isError) {
+      const { data } = error;
+      setErrorMsg(data);
+    }
+  }, [isSuccess, isError, error, navigate]);
   return (
     <section className="py-6 bg-primary h-screen grid place-items-center">
       <div className="mx-auto max-w-md px-5 lg:px-0">
@@ -10,7 +34,7 @@ const Login = () => {
             Sign in to Student Account
           </h2>
         </div>
-        <form className="mt-8 space-y-6" action="#" method="POST">
+        <form className="mt-8 space-y-6" onSubmit={loginHandler}>
           <input type="hidden" name="remember" value="true" />
           <div className="rounded-md shadow-sm -space-y-px">
             <div>
@@ -25,6 +49,7 @@ const Login = () => {
                 required
                 className="login-input rounded-t-md"
                 placeholder="Email address"
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
             <div>
@@ -39,6 +64,7 @@ const Login = () => {
                 required
                 className="login-input rounded-b-md"
                 placeholder="Password"
+                onChange={(e) => setPassword(e.target.value)}
               />
             </div>
           </div>
@@ -58,11 +84,13 @@ const Login = () => {
             <button
               type="submit"
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-violet-600 hover:bg-violet-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-500"
+              disabled={isLoading}
             >
               Sign in
             </button>
           </div>
         </form>
+        <div className="my-3">{errorMsg && <Error message={errorMsg} />}</div>
       </div>
     </section>
   );

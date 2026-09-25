@@ -1,6 +1,14 @@
 import Logo from "@/assets/react.svg";
+import { useDispatch } from "react-redux";
+import { userLoggedOut } from "@/features/auth/authSlice";
 import { Link } from "react-router-dom";
+
 const Navbar = () => {
+  const dispatch = useDispatch();
+  const logOut = () => {
+    dispatch(userLoggedOut());
+    localStorage.clear();
+  };
   return (
     <nav className="shadow-md">
       <div className="max-w-7xl px-5 lg:px-0 mx-auto flex justify-between py-3">
@@ -12,7 +20,10 @@ const Navbar = () => {
             Leaderboard
           </Link>
           <h2>Student Name</h2>
-          <button className="flex gap-2 border border-cyan items-center px-4 py-1 rounded-full text-sm transition-all hover:bg-cyan ">
+          <button
+            className="flex gap-2 border border-cyan items-center px-4 py-1 rounded-full text-sm transition-all hover:bg-cyan"
+            onClick={logOut}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
